@@ -29,6 +29,11 @@ public:
 	int GetItemAmount(int itemIDToCheck);
 	UFUNCTION()
 	TArray<int> GetItemIDList() const;
+	UFUNCTION()
+	TMap<int, int>& GetItemInventory() { return itemInventory; }
+
+	UFUNCTION()
+	void SavePlayerInventory();
 	
 protected:
 

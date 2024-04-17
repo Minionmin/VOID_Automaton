@@ -15,10 +15,11 @@ void UPlayerInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// QuestManagerで使用するために、プレイヤーのインベントリをセット
+	// クエストの開始時にPlayerのインベントリを保存するように設定
 	if(const auto questManager = UMasterUtilities::GetQuestManager(this))
 	{
-		questManager->SetPlayerInventory(this);	
+		questManager->OnQuestStarted.AddDynamic(this, &UPlayerInventoryComponent::SavePlayerInventory);
+		questManager->LoadPlayerInventory(this);
 	}
 }
 
@@ -76,3 +77,10 @@ TArray<int> UPlayerInventoryComponent::GetItemIDList() const
 	return itemIDList;
 }
 
+void UPlayerInventoryComponent::SavePlayerInventory()
+{
+	if(const auto questManager = UMasterUtilities::GetQuestManager(this))
+	{
+		questManager->SavePlayerInventory(itemInventory);
+	}
+}

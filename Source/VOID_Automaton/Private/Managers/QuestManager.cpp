@@ -4,12 +4,40 @@
 #include "Managers/QuestManager.h"
 
 #include "MyCustomUnrealLibrary.h"
+#include "Components/PlayerInventoryComponent.h"
 #include "HUDs/QuestResultWidget.h"
 #include "Managers/DataStorage.h"
-#include "Components\PlayerInventoryComponent.h"
 
 UQuestManager::UQuestManager()
 {
+}
+
+void UQuestManager::SavePlayerInventory(TMap<int, int>& inventory)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Saving Player Inventory"));
+	playerInventory.Empty();
+	for(const auto& item : inventory)
+	{
+		// Log the item ID and amount
+		UE_LOG(LogTemp, Warning, TEXT("Item ID: %d, Amount: %d"), item.Key, item.Value);
+		playerInventory.Add(item.Key, item.Value);
+	}
+}
+
+void UQuestManager::LoadPlayerInventory(UPlayerInventoryComponent* newPlayerInventoryComponent)
+{
+	playerInventoryComponent = newPlayerInventoryComponent;
+	auto& newPlayerInventory = newPlayerInventoryComponent->GetItemInventory();
+	
+	UE_LOG(LogTemp, Warning, TEXT("Loading Player Inventory"));
+	UE_LOG(LogTemp, Warning, TEXT("Quest Manager Inventory Size: %d"), playerInventory.Num());
+	newPlayerInventory.Empty();
+	for(const auto& item : playerInventory)
+	{
+		// Log the item ID and amount
+		UE_LOG(LogTemp, Warning, TEXT("Item ID: %d, Amount: %d"), item.Key, item.Value);
+		newPlayerInventory.Add(item.Key, item.Value);
+	}
 }
 
 FText UQuestManager::GetQuestName() const
@@ -20,24 +48,6 @@ FText UQuestManager::GetQuestName() const
 TArray<int> UQuestManager::GetItemDropIDList() const
 {
 	return itemDropIDList;
-}
-
-void UQuestManager::SetPlayerInventory(UPlayerInventoryComponent* targetPlayerInventory)
-{
-	if(playerInventory)
-	{
-		// Log item amount in player inventory
-		for(const auto itemID : playerInventory->GetItemIDList())
-		{
-			const int itemAmount = playerInventory->GetItemAmount(itemID);
-			UE_LOG(LogTemp, Warning, TEXT("ItemID: %d, Amount: %d"), itemID, itemAmount);
-		}
-	}
-	if(!playerInventory)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("SetPlayerInventory"));
-		playerInventory = targetPlayerInventory;
-	}
 }
 
 #pragma region levelSelectorUI
@@ -204,12 +214,18 @@ TArray<TPair<FItemListStruct*, int>> UQuestManager::CalculateItemDropList()
 					itemPairArray.Add(itemPair);
 
 					// ドロップアイテムのデータをPlayerInventoryに追加
-					if(playerInventory)
+					if(playerInventoryComponent)
 					{
-						playerInventory->AddItem(itemID, itemAmount);
+						playerInventoryComponent->AddItem(itemID, itemAmount);
 					}
 				}
 			}
+		}
+
+		// 更新されたプレイヤーのインベントリーをセーブ
+		if(playerInventoryComponent)
+		{
+			playerInventoryComponent->SavePlayerInventory();
 		}
 	}
 

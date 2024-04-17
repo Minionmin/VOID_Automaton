@@ -71,6 +71,9 @@ void ULevelSelectorWidget::OnStartButtonClicked()
 			questManager->SetQuestName(questName);
 			questManager->SetItemDropIDList(itemDropIDList);
 			questManager->ClearQuestStat();
+			// クエストが開始された時にPlayerのインベントリを保存するように設定
+			questManager->OnQuestStarted.Broadcast();
+			questManager->OnQuestStarted.Clear();
 		}
 
 		// Widgetが閉じる時の処理を実行

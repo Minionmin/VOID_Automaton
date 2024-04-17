@@ -11,6 +11,7 @@
 class UPlayerInventoryComponent;
 class UQuestResultWidget;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnQuestStarted);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnQuestCompleted);
 
 /**
@@ -28,6 +29,7 @@ public:
 	/*
 		イベント
 	*/
+	FOnQuestStarted OnQuestStarted;
 	FOnQuestCompleted OnQuestCompleted;
 	
 	UFUNCTION(BlueprintCallable)
@@ -35,10 +37,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<int> GetItemDropIDList() const;
 
-	// PlayerInventoryのアイテムを操作する
+	// アイテムインベントリー操作
 	UFUNCTION(BlueprintCallable)
-	void SetPlayerInventory(UPlayerInventoryComponent* targetPlayerInventory);
-		
+	void SavePlayerInventory(TMap <int, int>& inventory);
+	UFUNCTION(BlueprintCallable)
+	void LoadPlayerInventory(UPlayerInventoryComponent* newPlayerInventoryComponent);
+	
 	// クエストの一般情報
 	UFUNCTION(BlueprintCallable)
 	void SetQuestName(FText name);
@@ -84,9 +88,13 @@ private:
 	
 private:
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
-	UPlayerInventoryComponent* playerInventory;
-	
+	// プレイヤーの所持アイテム情報
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	UPlayerInventoryComponent* playerInventoryComponent = nullptr;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = true))
+	TMap<int, int> playerInventory; // <ItemID, Amount>
+
+	// クエスト情報
 	UPROPERTY(VisibleAnywhere)
 	FText questName;
 	UPROPERTY(VisibleAnywhere)

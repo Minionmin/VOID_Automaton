@@ -18,7 +18,7 @@ class VOID_AUTOMATON_API UBuffListDataEntry : public UObject
 public:
 
 	UFUNCTION(BlueprintCallable)
-	void InitializeData(TSubclassOf<UBuff> buffClass, UTexture2D* buffIcon, FText buffName, FName buffID, FText buffDescription,
+	void InitializeData(TSubclassOf<UBuff> buffClass, UTexture2D* buffIcon, FText buffName, int buffID, FText buffDescription,
 		FText buffEffectDescription, float buffStrength, int32 buffWeight, UBuffLoadoutWidget* buffLoadoutWidgetRef);
 	
 public:

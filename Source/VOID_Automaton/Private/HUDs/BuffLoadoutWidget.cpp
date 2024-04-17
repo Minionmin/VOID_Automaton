@@ -80,7 +80,7 @@ void UBuffLoadoutWidget::InitializeBuffListView()
 					buffData->buffClass,
 					buffData->buffIcon,
 					buffData->buffName,
-					data.Key, // Row nameを各リストビューエントリーBuffIDに渡す
+					buffData->buffID,
 					buffData->buffDescription,
 					buffData->buffEffectDescription,
 					buffData->buffStrength,
@@ -285,7 +285,7 @@ void UBuffLoadoutWidget::SetSelectedBuffClass(TSubclassOf<UBuff> newBuffClass)
 	selectedBuffClass = newBuffClass;
 }
 
-void UBuffLoadoutWidget::SetSelectedBuffID(FName newBuffID)
+void UBuffLoadoutWidget::SetSelectedBuffID(int newBuffID)
 {
 	selectedBuffID = newBuffID;
 }

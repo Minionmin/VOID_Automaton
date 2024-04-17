@@ -88,7 +88,7 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class UBuff> selectedBuffClass = nullptr;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	FName selectedBuffID;
+	int selectedBuffID;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	FText selectedBuffName;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -131,7 +131,7 @@ public:
 
 	// 現在選択されているバフのデータを設定する
 	UFUNCTION()
-	void SetSelectedBuffID(FName newBuffID);
+	void SetSelectedBuffID(int newBuffID);
 	UFUNCTION()
 	void SetSelectedBuffName(FText newBuffName);
 	UFUNCTION()

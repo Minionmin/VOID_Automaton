@@ -20,7 +20,7 @@ public:
 	UBuff();
 
 	UFUNCTION(BlueprintCallable)
-	virtual void InitializeBuff(FName newID, FString newName, float newStrength);
+	virtual void InitializeBuff(int newID, FString newName, float newStrength);
 	UFUNCTION(BlueprintCallable)
 	virtual void ApplyEffect(AActor* target);
 	UFUNCTION(BlueprintCallable)
@@ -29,7 +29,7 @@ public:
 protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buff")
-	FName buffID = "";
+	int buffID = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buff")
 	FString buffName = "";
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Buff")
@@ -41,11 +41,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FString GetBuffName() const { return buffName; }
 	UFUNCTION(BlueprintCallable)
-	FName GetBuffID() const { return buffID; }
+	int GetBuffID() const { return buffID; }
 	
 	// セッター
 	UFUNCTION(BlueprintCallable)
-	void SetBuffID(FName newID);
+	void SetBuffID(int newID);
 	UFUNCTION(BlueprintCallable)
 	void SetBuffName(FString newName);
 	UFUNCTION(BlueprintCallable)

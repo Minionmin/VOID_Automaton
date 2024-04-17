@@ -18,7 +18,7 @@ struct VOID_AUTOMATON_API FPlayerSaveStruct : public FTableRowBase
 		バフのセーブデータ
 	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TArray<FName> buffSaveDataIDs;
+	TArray<int> buffSaveDataIDs;
 
 	/*
 		イベントリーのアイテム情報

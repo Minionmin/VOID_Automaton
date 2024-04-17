@@ -19,7 +19,7 @@ struct VOID_AUTOMATON_API FBuffListStruct : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText buffName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FName buffID;
+	int buffID;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FText buffDescription;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

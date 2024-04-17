@@ -141,7 +141,8 @@ void UMainGameInstance::LoadBuffListFromSaveFile()
 		for(auto i = 0; i < buffDataIDs.Num(); i++)
 		{
 			// バフデータテーブルからバフのアイコンを取得（RowNameで検索）
-			FBuffListStruct* buffData = buffListDataTable->FindRow<FBuffListStruct>(buffDataIDs[i], TEXT("Buff ID not found"));
+			const FName rowName = FName(*FString::FromInt(buffDataIDs[i]));
+			FBuffListStruct* buffData = buffListDataTable->FindRow<FBuffListStruct>(rowName, TEXT("Buff ID not found"));
 			if(buffData)
 			{
 				// セーブファイルからバフリストを再構築（バフFNameで検索）

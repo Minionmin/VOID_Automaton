@@ -139,7 +139,7 @@ void UPlayerInfoUI::UpdateBuffImages()
 	{
 		// バフデータテーブルからバフのアイコンを取得（RowNameで検索）
 		UTexture2D* buffIcon = nullptr;
-		FName rowName = buffList[i]->GetBuffID();
+		FName rowName = FName(*FString::FromInt(buffList[i]->GetBuffID()));
 		FBuffListStruct* buffData = buffTable->FindRow<FBuffListStruct>(rowName, TEXT("Buff ID not found"));
 		if(buffData)
 		{

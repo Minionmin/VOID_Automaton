@@ -79,7 +79,7 @@ void UBuffComponent::LoadActiveBuffs()
 }
 
 // バフコンポネントからバフリストに登録されている全てのバフIDを取得する（データセーブ用）
-void UBuffComponent::GetActiveBuffIDs(TArray<FName>& buffSaveDataArray) const
+void UBuffComponent::GetActiveBuffIDs(TArray<int>& buffSaveDataArray) const
 {
 	for(const auto buff : activeBuffs)
 	{

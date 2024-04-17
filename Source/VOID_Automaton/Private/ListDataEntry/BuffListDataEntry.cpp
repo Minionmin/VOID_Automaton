@@ -7,7 +7,7 @@ void UBuffListDataEntry::InitializeData(
 	TSubclassOf<UBuff> buffClass,
 	UTexture2D* buffIcon,
 	FText buffName,
-	FName buffID,
+	int buffID,
 	FText buffDescription,
 	FText buffEffectDescription,
 	float buffStrength,

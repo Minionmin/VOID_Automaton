@@ -54,7 +54,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	TArray<UBuff*> GetActiveBuffs() { return activeBuffs; }
 	UFUNCTION(BlueprintCallable)
-	void GetActiveBuffIDs(TArray<FName>& buffSaveDataArray) const;
+	void GetActiveBuffIDs(TArray<int>& buffSaveDataArray) const;
 	UFUNCTION(BlueprintCallable)
 	void SetActiveBuffs(const TArray<UBuff*>& buffList);
 	UFUNCTION(BlueprintCallable)

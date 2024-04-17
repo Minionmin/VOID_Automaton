@@ -15,14 +15,14 @@ void UBuff::RemoveEffect(AActor* target)
 {
 }
 
-void UBuff::InitializeBuff(FName newID, FString newName, float newStrength)
+void UBuff::InitializeBuff(int newID, FString newName, float newStrength)
 {
 	buffID = newID;
 	buffName = newName;
 	buffStrength = newStrength;
 }
 
-void UBuff::SetBuffID(FName newID)
+void UBuff::SetBuffID(int newID)
 {
 	buffID = newID;
 }

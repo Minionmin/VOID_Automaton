@@ -162,6 +162,7 @@ void AVOIDCharacter::Initialize()
 		// セーブデータをロード（メインメニューから「継続ボタンによる」移動時のみ）
 		if(hasSaveGame->GetMainMenuContinue_Implementation())
 		{
+			// セーブデータの全部をロードする
 			UsePlayerSaveData(saveData);
 			// フラグをリセット
 			hasSaveGame->SetMainMenuContinue_Implementation(false);
@@ -171,7 +172,7 @@ void AVOIDCharacter::Initialize()
 		{
 			// このレベルで戦闘モードに入るかどうか
 			bIsInCombat = hasSaveGame->GetCombatModeNextLevel_Implementation();
-			// プレイヤーのバフリストを初期化
+			// 設定のデータだけをロードする
 			UsePlayerSaveData(saveData, false);
 		}
 	}
@@ -1078,12 +1079,19 @@ FPlayerSaveStruct AVOIDCharacter::GetPlayerSaveData()
 	// バフ
 	buffComponent->GetActiveBuffIDs(playerSaveData.buffSaveDataIDs);
 	
+	// インベントリーのアイテム
+	auto& itemInventory = inventoryComponent->GetItemInventory();
+	for(const auto& item : itemInventory)
+	{
+		playerSaveData.playerInventory.Add(item);
+	}
+	
 	return playerSaveData;
 }
 
-void AVOIDCharacter::UsePlayerSaveData(FPlayerSaveStruct playerSaveData, bool bIsBase)
+void AVOIDCharacter::UsePlayerSaveData(FPlayerSaveStruct playerSaveData, bool bFullData)
 {
-	if(bIsBase)
+	if(bFullData)
 	{
 		// プレイヤーの位置情報（基地にいる時のみ）
 		if(playerSaveData.playerLocation != FVector::Zero())
@@ -1091,6 +1099,14 @@ void AVOIDCharacter::UsePlayerSaveData(FPlayerSaveStruct playerSaveData, bool bI
 			SetActorLocation(playerSaveData.playerLocation);
 		}
 		VOIDController->SetControlRotation(playerSaveData.controllerRotation);
+		
+		// インベントリーのアイテム
+		// セーブファイルからデータをロードする前に既存のインベントリーデータをクリア
+		inventoryComponent->GetItemInventory().Empty();
+		for(const auto& item: playerSaveData.playerInventory)
+		{
+			inventoryComponent->AddItem(item.Key, item.Value);
+		}
 	}
 
 	// インプットの設定
@@ -1113,6 +1129,7 @@ void AVOIDCharacter::UsePlayerSaveData(FPlayerSaveStruct playerSaveData, bool bI
 	
 	// バフ
 	buffComponent->ReloadBuffList();
+	
 }
 
 void AVOIDCharacter::PlayDrinkPotionMontage()
@@ -1156,4 +1173,3 @@ void AVOIDCharacter::UnbindQuestStat()
 		OnPlayerDead.RemoveDynamic(questManager, &UQuestManager::ShowGameOverWidget);
 	}
 }
-

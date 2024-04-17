@@ -14,11 +14,12 @@ UPlayerInventoryComponent::UPlayerInventoryComponent()
 void UPlayerInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// クエストの開始時にPlayerのインベントリを保存するように設定
+	
 	if(const auto questManager = UMasterUtilities::GetQuestManager(this))
 	{
+		// クエストの開始時にPlayerのインベントリを保存するように設定
 		questManager->OnQuestStarted.AddDynamic(this, &UPlayerInventoryComponent::SavePlayerInventory);
+		// プレイヤーがレベルにロードされる時にプレイヤーのインベントリをロードするように設定
 		questManager->LoadPlayerInventory(this);
 	}
 }
@@ -34,14 +35,10 @@ void UPlayerInventoryComponent::AddItem(int itemIDToCheck, int amountToAdd)
 {
 	if(HasItem(itemIDToCheck))
 	{
-		// LOG
-		UE_LOG(LogTemp, Warning, TEXT("HasItem ItemID: %d, Amount: %d"), itemIDToCheck, itemInventory[itemIDToCheck]);
 		itemInventory[itemIDToCheck] += amountToAdd;
 	}
 	else
 	{
-		// LOG
-		UE_LOG(LogTemp, Warning, TEXT("!HasItem ItemID: %d, Amount: %d"), itemIDToCheck, amountToAdd);
 		itemInventory.Add(itemIDToCheck, amountToAdd);
 	}
 }

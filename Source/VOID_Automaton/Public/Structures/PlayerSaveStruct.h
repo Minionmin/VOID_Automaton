@@ -13,10 +13,18 @@ USTRUCT(Blueprintable, BlueprintType)
 struct VOID_AUTOMATON_API FPlayerSaveStruct : public FTableRowBase
 {
 	GENERATED_BODY()
-
-	// バフのセーブデータ
+	
+	/*
+		バフのセーブデータ
+	*/
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<FName> buffSaveDataIDs;
+
+	/*
+		イベントリーのアイテム情報
+	*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<int,int> playerInventory; // <アイテムID, アイテム数>
 	
 	/*
 		位置情報

@@ -6,7 +6,11 @@
 #include "MyCustomUnrealLibrary.h"
 #include "Components/PlayerInventoryComponent.h"
 #include "HUDs/QuestResultWidget.h"
+#include "Interfaces/HasSaveGame.h"
 #include "Managers/DataStorage.h"
+#include "Saves/MainSaveGame.h"
+
+class IHasSaveGame;
 
 UQuestManager::UQuestManager()
 {

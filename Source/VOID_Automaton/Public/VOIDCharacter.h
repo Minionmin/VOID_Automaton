@@ -75,7 +75,7 @@ public:
 	UFUNCTION()
 	FPlayerSaveStruct GetPlayerSaveData();
 	UFUNCTION()
-	void UsePlayerSaveData(FPlayerSaveStruct playerSaveData, bool bIsBase = true);
+	void UsePlayerSaveData(FPlayerSaveStruct playerSaveData, bool bFullData = true);
 	
 	/*
 		一般

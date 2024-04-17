@@ -6,42 +6,12 @@
 #include "MyCustomUnrealLibrary.h"
 #include "Components/PlayerInventoryComponent.h"
 #include "HUDs/QuestResultWidget.h"
-#include "Interfaces/HasSaveGame.h"
 #include "Managers/DataStorage.h"
-#include "Saves/MainSaveGame.h"
 
 class IHasSaveGame;
 
 UQuestManager::UQuestManager()
 {
-}
-
-void UQuestManager::SavePlayerInventory(TMap<int, int>& inventory)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Saving Player Inventory"));
-	playerInventory.Empty();
-	for(const auto& item : inventory)
-	{
-		// Log the item ID and amount
-		UE_LOG(LogTemp, Warning, TEXT("Item ID: %d, Amount: %d"), item.Key, item.Value);
-		playerInventory.Add(item.Key, item.Value);
-	}
-}
-
-void UQuestManager::LoadPlayerInventory(UPlayerInventoryComponent* newPlayerInventoryComponent)
-{
-	playerInventoryComponent = newPlayerInventoryComponent;
-	auto& newPlayerInventory = newPlayerInventoryComponent->GetItemInventory();
-	
-	UE_LOG(LogTemp, Warning, TEXT("Loading Player Inventory"));
-	UE_LOG(LogTemp, Warning, TEXT("Quest Manager Inventory Size: %d"), playerInventory.Num());
-	newPlayerInventory.Empty();
-	for(const auto& item : playerInventory)
-	{
-		// Log the item ID and amount
-		UE_LOG(LogTemp, Warning, TEXT("Item ID: %d, Amount: %d"), item.Key, item.Value);
-		newPlayerInventory.Add(item.Key, item.Value);
-	}
 }
 
 FText UQuestManager::GetQuestName() const
@@ -55,12 +25,13 @@ TArray<int> UQuestManager::GetItemDropIDList() const
 }
 
 #pragma region levelSelectorUI
-// クエスト選択UIで「出発」が押される時にデータが渡される
+// クエスト選択UIで「出発」が押される時に、このクエストの名前が渡される
 void UQuestManager::SetQuestName(FText name)
 {
 	questName = name;
 }
 
+// クエスト選択UIで「出発」が押される時に、このクエストでドロップするアイテムのIDリストが渡される
 void UQuestManager::SetItemDropIDList(const TArray<int>& itemDropIDArray)
 {
 	ClearItemDropIDList();
@@ -72,12 +43,14 @@ void UQuestManager::SetItemDropIDList(const TArray<int>& itemDropIDArray)
 	}
 }
 
+// クエスト選択UIで「出発」が押される時に、前のクエストのステータスをリセットする
 void UQuestManager::ClearQuestStat()
 {
 	questStat = FQuestStatStruct();
 }
 #pragma endregion levelSelectorUI
 
+#pragma region QuestResultUI
 void UQuestManager::ClearItemDropIDList()
 {
 	itemDropIDList.Empty();
@@ -159,6 +132,7 @@ void UQuestManager::ShowQuestResultWidget()
 		UUIUtilities::SetFocusUI(this);
 	}
 }
+#pragma endregion QuestResultUI
 
 void UQuestManager::ShowGameOverWidget()
 {
@@ -237,4 +211,26 @@ TArray<TPair<FItemListStruct*, int>> UQuestManager::CalculateItemDropList()
 	dataStorage->UnloadDataTable(EDataTableType::ItemList);
 
 	return itemPairArray;
+}
+
+
+void UQuestManager::SavePlayerInventory(TMap<int, int>& inventory)
+{
+	playerInventory.Empty();
+	for(const auto& item : inventory)
+	{
+		playerInventory.Add(item.Key, item.Value);
+	}
+}
+
+void UQuestManager::LoadPlayerInventory(UPlayerInventoryComponent* newPlayerInventoryComponent)
+{
+	playerInventoryComponent = newPlayerInventoryComponent;
+	auto& newPlayerInventory = newPlayerInventoryComponent->GetItemInventory();
+	newPlayerInventory.Empty();
+	
+	for(const auto& item : playerInventory)
+	{
+		newPlayerInventory.Add(item.Key, item.Value);
+	}
 }
